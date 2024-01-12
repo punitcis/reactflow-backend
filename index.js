@@ -1,7 +1,7 @@
 // server.js
 const express = require("express");
 const mongoose = require("mongoose");
-const { ObjectId } = require('mongoose').Types;
+const { ObjectId } = require("mongoose").Types;
 const app = express();
 const port = 3001;
 const bodyParser = require("body-parser");
@@ -10,7 +10,8 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // MongoDB Connection URL
-const mongoUrl = "mongodb://localhost:27017/NodesDataBase";
+const mongoUrl =
+  "mongodb+srv://reactflow-user:test123p@reactflowcluster.ul9wdb7.mongodb.net";
 
 // Connect to MongoDB using Mongoose
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -67,7 +68,7 @@ db.once("open", () => {
 
       // Update the existing document
 
-      console.log("GRAPHHHHHH" , graphId)
+      console.log("GRAPHHHHHH", graphId);
       const updatedGraph = await GraphModel.findByIdAndUpdate(
         { _id: new ObjectId(graphId) },
         { $set: graphData },
@@ -85,12 +86,12 @@ db.once("open", () => {
   app.get("/api/nodes", async (req, res) => {
     try {
       const graphModels = await GraphModel.find();
-  
+
       // Collect nodes from all documents
       const allNodes = graphModels.flatMap((model) => model.nodes);
-      const allEdges = graphModels.flatMap((model)=>model.edges)
-  
-      res.json([...allNodes , ...allEdges]);
+      const allEdges = graphModels.flatMap((model) => model.edges);
+
+      res.json([...allNodes, ...allEdges]);
     } catch (error) {
       console.error("Error fetching nodes:", error);
       res.status(500).json({ error: "Internal Server Error" });
